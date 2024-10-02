@@ -27,7 +27,7 @@ class TeamAssigner:
         corner_clusters = [clustered_image[0, 0], clustered_image[0, -1], clustered_image[0, -1], clustered_image[-1, 0], clustered_image[-1, -1]]
       
         non_player_cluster = max(set(corner_clusters), key=corner_clusters.count)
-        player_cluster = non_player_cluster + 1
+        player_cluster = 1 if non_player_cluster == 0 else 0
 
         player_color = kmeans.cluster_centers_[player_cluster]
 
@@ -36,7 +36,7 @@ class TeamAssigner:
     def assign_team_color(self, frame, player_detections):
         player_colors = []
         for _, player_detection in player_detections.items():
-            bbox = player_detections['bbox']
+            bbox = player_detection['bbox']
             player_color = self.get_player_color(frame, bbox)
             player_colors.append(player_color)
 
@@ -55,7 +55,7 @@ class TeamAssigner:
         
         player_color = self.get_player_color(frame, player_bbox)
 
-        team_id = self.kmeans.predict(player_color.reshape(1, -1)[0])
+        team_id = self.kmeans.predict(player_color.reshape(1, -1))[0]
         team_id += 1
 
         self.player_team_dict[player_id] = team_id
