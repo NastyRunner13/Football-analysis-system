@@ -2,6 +2,7 @@ yolov8x.pt
 runs
 football-players-detection-1
 yolov5xu.pt
+models
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
